@@ -26,7 +26,7 @@ jobs:
           pip install feedparser pytz
 
       - name: Run script generate_news
-        run: python generate_news.py
+        run: python news.py
 
       - name: Commit & Push index.html
         run: |
