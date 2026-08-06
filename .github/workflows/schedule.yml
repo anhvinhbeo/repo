@@ -23,7 +23,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install feedparser pytz
+          pip install feedparser pytz beautifulsoup4 requests lxml
 
       - name: Run script generate_news
         run: python news.py
