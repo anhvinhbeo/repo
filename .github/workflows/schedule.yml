@@ -1,0 +1,37 @@
+name: Auto Fetch News
+
+on:
+  schedule:
+    # 1h00 và 9h00 UTC tương ứng với 8h00 và 16h00 giờ UTC+7 (Việt Nam/Indonesia)
+    - cron: '0 1,9 * * *'
+  workflow_dispatch: # Cho phép bấm chạy thủ công bất cứ lúc nào
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install feedparser pytz
+
+      - name: Run script generate_news
+        run: python generate_news.py
+
+      - name: Commit & Push index.html
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add index.html
+          git diff-index --quiet HEAD || git commit -m "Auto update news"
+          git push
